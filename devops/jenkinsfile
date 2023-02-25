@@ -13,7 +13,6 @@ pipeline {
 
 
   stages {
-
     stage('Maven Install') {
       // Specifies where the entire Pipeline, or a specific stage, will execute in the Jenkins environment depending on where the agent section is placed
     	agent {
@@ -26,15 +25,12 @@ pipeline {
       }
     }
 
-
     stage('Docker Build') {
       steps {
         sh 'du -sh $WORKSPACE/target/*.jar'
       	sh 'docker build -t scalian_training/java-app -f devops/Dockerfile --build-arg VERSION=1.0.2-SNAPSHOT .'
       }
     }
-
-
 
     // stage('Testing') {
     //   steps {
@@ -48,7 +44,6 @@ pipeline {
     //     }
     //   }
     // }
-
 
     stage('Docker Push') {
       steps {
@@ -84,7 +79,6 @@ pipeline {
   }
   
 }
-
 
 def getLastGitTag() {
     sh "git tag --sort version:refname | tail -1 > version.tmp"
