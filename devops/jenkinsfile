@@ -7,7 +7,7 @@ pipeline {
 	agent any // Default Agent
 
   environment {
-		DOCKERHUB_CREDENTIALS=credentials('scalian-training-jenkins Personal')
+		DOCKERHUB_CREDENTIALS=credentials('GitHub')
     TAG_NAME=getLastGitTag()
 	}
 
