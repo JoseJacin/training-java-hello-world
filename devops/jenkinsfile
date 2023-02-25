@@ -8,7 +8,7 @@ pipeline {
 
   environment {
 		DOCKERHUB_CREDENTIALS=credentials('GitHub')
-    TAG_NAME=getLastGitTag()
+    //TAG_NAME=getLastGitTag()
 	}
 
 
@@ -53,8 +53,10 @@ pipeline {
     stage('Docker Push') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      	sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:$TAG_NAME'
-        sh 'docker push adrianscalian/scalian_training_java-app:$TAG_NAME'
+      	//sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:$TAG_NAME'
+        //sh 'docker push adrianscalian/scalian_training_java-app:$TAG_NAME'
+        sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:prueba_jenkins'
+        sh 'docker push adrianscalian/scalian_training_java-app:prueba_jenkins'
       }
     }
 
