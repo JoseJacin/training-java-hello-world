@@ -79,6 +79,7 @@ pipeline {
     success {
       // send mail
       echo "SUCCESS"
+      archiveArtifacts artifacts: 'target/*.jar'
     }
   }
   
