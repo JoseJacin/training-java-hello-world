@@ -11,8 +11,8 @@ pipeline {
     TAG_NAME="1.0.2-SNAPSHOT"
     //TAG_NAME=getLastGitTag()
     SONARQUBE_HOST_LOCAL="${env.SONARQUBE_HOST}"
+    HOLA="hola"
 	}
-
 
   stages {
     stage('List env vars') {
@@ -29,6 +29,7 @@ pipeline {
     //       println "env-BUILD_VERSION:"
     //       println "${env.BUILD_VERSION}"
            env.TAG_NAME = latestTag
+           env.HOLA="adios"
            println "env-TAG_NAME:"
            println "${env.TAG_NAME}"
     //       env.DOCKERHUB_CREDENTIALS = credentials('DockerHub Personal')
@@ -111,8 +112,6 @@ pipeline {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       	sh 'docker tag scalian_training/java-app josejacin/scalian_training_java-app:$TAG_NAME'
         sh 'docker push josejacin/scalian_training_java-app:$TAG_NAME'
-        //sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
-        //sh 'docker push adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
       }
     }
 
