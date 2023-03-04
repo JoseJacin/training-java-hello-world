@@ -7,7 +7,7 @@ pipeline {
 	agent any // Default Agent
 
   environment {
-		DOCKERHUB_CREDENTIALS=credentials('GitHub')
+		DOCKERHUB_CREDENTIALS=credentials('DockerHub Personal')
     TAG_NAME="1.0.2-SNAPSHOT"
     //TAG_NAME=getLastGitTag()
     SONARQUBE_HOST_LOCAL="${env.SONARQUBE_HOST}"
@@ -31,7 +31,7 @@ pipeline {
            env.TAG_NAME = latestTag
            println "env-TAG_NAME:"
            println "${env.TAG_NAME}"
-    //       env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
+    //       env.DOCKERHUB_CREDENTIALS = credentials('DockerHub Personal')
     //       println "env-DOCKERHUB_CREDENTIALS:"
     //       println "${env.DOCKERHUB_CREDENTIALS}"
          }
