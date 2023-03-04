@@ -8,7 +8,7 @@ pipeline {
 
   environment {
 		DOCKERHUB_CREDENTIALS=credentials('GitHub')
-    env.TAG_NAME=getLastGitTag()
+    TAG_NAME=getLastGitTag()
     println "env-TAG_NAME:"
     println "${env.TAG_NAME}"
 	}
