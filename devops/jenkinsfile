@@ -1,18 +1,34 @@
 #!groovy
 
 //@Library('functions')_
-println("SONAR HOME: ${env.SONARQUBE_HOST}")
+//println("SONAR HOME: ${env.SONARQUBE_HOST}")
 
 pipeline {
 	agent any // Default Agent
 
   environment {
 		DOCKERHUB_CREDENTIALS=credentials('GitHub')
-    TAG_NAME=getLastGitTag()
+    //TAG_NAME=getLastGitTag()
 	}
 
 
   stages {
+    stage('get git tag') {
+        steps {
+          script {
+          latestTag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
+          env.BUILD_VERSION = latestTag
+          echo "env-BUILD_VERSION:"
+          echo "${env.BUILD_VERSION}"
+          env.TAG_NAME = latestTag
+          echo "env-TAG_NAME:"
+          echo "${env.TAG_NAME}"
+          env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
+          echo "env-DOCKERHUB_CREDENTIALS:"
+          echo "${env.DOCKERHUB_CREDENTIALS}"
+        }
+    }
+    
     stage('Test') {
       // Specifies where the entire Pipeline, or a specific stage, will execute in the Jenkins environment depending on where the agent section is placed
       agent {
@@ -117,9 +133,5 @@ pipeline {
 }
 
 def getLastGitTag() {
-    sh "git tag --sort version:refname | tail -1 > version.tmp"
-    String tag = readFile 'version.tmp'
-    echo "Branch: ${scm.branches[0].name}"
-    echo "Tag, ${tag}." 
-    return tag
+  sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
 }
