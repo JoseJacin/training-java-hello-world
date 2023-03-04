@@ -16,11 +16,11 @@ pipeline {
      stage('get git tag') {
        steps {
          script {
-    //       latestTag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
+           latestTag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
     //       env.BUILD_VERSION = latestTag
     //       println "env-BUILD_VERSION:"
     //       println "${env.BUILD_VERSION}"
-    //       env.TAG_NAME = latestTag
+           env.TAG_NAME = latestTag
            println "env-TAG_NAME:"
            println "${env.TAG_NAME}"
     //       env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
