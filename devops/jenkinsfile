@@ -26,6 +26,7 @@ pipeline {
           env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
           echo "env-DOCKERHUB_CREDENTIALS:"
           echo "${env.DOCKERHUB_CREDENTIALS}"
+        }
       }
     }
     
@@ -129,7 +130,6 @@ pipeline {
       archiveArtifacts artifacts: 'target/*.jar'
     }
   }
-  
 }
 
 def getLastGitTag() {
