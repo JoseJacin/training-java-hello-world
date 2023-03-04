@@ -133,5 +133,8 @@ pipeline {
 }
 
 String getLastGitTag() {
-  return sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
+  tag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
+  echo "tag: "
+  echo "${tag}"
+  return tag
 }
