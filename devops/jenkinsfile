@@ -13,21 +13,21 @@ pipeline {
 
 
   stages {
-    // stage('get git tag') {
-    //     steps {
-    //       script {
-    //       latestTag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
-    //       env.BUILD_VERSION = latestTag
-    //       echo "env-BUILD_VERSION:"
-    //       echo "${env.BUILD_VERSION}"
-    //       env.TAG_NAME = latestTag
-    //       echo "env-TAG_NAME:"
-    //       echo "${env.TAG_NAME}"
-    //       env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
-    //       echo "env-DOCKERHUB_CREDENTIALS:"
-    //       echo "${env.DOCKERHUB_CREDENTIALS}"
-    //     }
-    // }
+    stage('get git tag') {
+      steps {
+        script {
+          latestTag = sh(returnStdout:  true, script: "git tag --sort=-creatordate | head -n 1").trim()
+          env.BUILD_VERSION = latestTag
+          echo "env-BUILD_VERSION:"
+          echo "${env.BUILD_VERSION}"
+          env.TAG_NAME = latestTag
+          echo "env-TAG_NAME:"
+          echo "${env.TAG_NAME}"
+          env.DOCKERHUB_CREDENTIALS = credentials('GitHub')
+          echo "env-DOCKERHUB_CREDENTIALS:"
+          echo "${env.DOCKERHUB_CREDENTIALS}"
+      }
+    }
     
     stage('Test') {
       // Specifies where the entire Pipeline, or a specific stage, will execute in the Jenkins environment depending on where the agent section is placed
