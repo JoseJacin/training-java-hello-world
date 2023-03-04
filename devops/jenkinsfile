@@ -8,11 +8,19 @@ pipeline {
 
   environment {
 		DOCKERHUB_CREDENTIALS=credentials('GitHub')
-    TAG_NAME=getLastGitTag()
+    TAG_NAME="1.0.2-SNAPSHOT"
+    //TAG_NAME=getLastGitTag()
+    SONARQUBE_HOST_LOCAL="${env.SONARQUBE_HOST}"
 	}
 
 
   stages {
+    stage('List env vars') {
+      steps{
+				sh "printenv | sort"
+			}
+    }
+
      stage('get git tag') {
        steps {
          script {
@@ -50,7 +58,7 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn verify sonar:sonar -Dsonar.projectKey=java-example-jenkins -Dsonar.host.url=http://172.16.235.10:9000 -Dsonar.login=e2b7c8cb7d5e087c5449acb5e69e1af5e214c1dc'
+        sh 'mvn verify sonar:sonar -Dsonar.projectKey=java-example-jenkins -Dsonar.host.url="${SONARQUBE_HOST_LOCAL}" -Dsonar.login=e2b7c8cb7d5e087c5449acb5e69e1af5e214c1dc'
       }
     }
 
@@ -75,8 +83,8 @@ pipeline {
 
     stage('Docker Build') {
       steps {
-        sh 'du -sh $WORKSPACE/target/*.jar'
-      	sh 'docker build -t scalian_training/java-app -f devops/Dockerfile .'
+        sh 'ls $WORKSPACE/target/'
+      	sh 'docker build -t scalian_training/java-app -f devops/Dockerfile --build-arg VERSION=$TAG_NAME .'
       }
     }
 
@@ -101,10 +109,9 @@ pipeline {
     stage('Docker Push') {
       steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      	//sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:$TAG_NAME'
-        //sh 'docker push adrianscalian/scalian_training_java-app:$TAG_NAME'
-        sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
-        sh 'docker push adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
+      	sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:$TAG_NAME'
+        //sh 'docker tag scalian_training/java-app adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
+        //sh 'docker push adrianscalian/scalian_training_java-app:1.0.2-SNAPSHOT'
       }
     }
 
@@ -121,7 +128,7 @@ pipeline {
   post {
     always  {
         sh 'docker logout'
-        archiveArtifacts artifacts: 'target/*.jar'
+        //archiveArtifacts artifacts: 'target/*.jar'
 
     }
     success {
